@@ -10,7 +10,7 @@ const app = express()
 const server = http.createServer(app)
 const io =socketIo(server)
 
-const port = 3000
+const port = process.env.PORT || 3000
 const publicDirectory = path.join(__dirname,'../public')
 app.use(express.static(publicDirectory))
 
@@ -45,7 +45,7 @@ io.on('connection',(socket)=>{
         io.to(user.room).emit('message',generateMessage(user.username,msg))
         callback()
     })
-     debugger
+
     socket.on('disconnect',()=>{
         const user = removeUser(socket.id)
        // console.log(user.username)
@@ -77,6 +77,6 @@ io.on('connection',(socket)=>{
 })
 
 server.listen(port,()=>{
-    console.log('Server is up')
+    console.log(`Server is up at ${port}`)
 
 })
